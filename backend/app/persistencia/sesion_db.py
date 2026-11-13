@@ -10,6 +10,10 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.config import settings
 
 _url = settings.database_url
+if _url.startswith("postgres://"):
+    _url = _url.replace("postgres://", "postgresql+psycopg://", 1)
+elif _url.startswith("postgresql://"):
+    _url = _url.replace("postgresql://", "postgresql+psycopg://", 1)
 _connect_args: dict = {}
 if _url.startswith("sqlite"):
     _connect_args = {"check_same_thread": False}
