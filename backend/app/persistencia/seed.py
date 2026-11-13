@@ -21,6 +21,9 @@ CASO_C1_ID = "c1-demo-oficinas-000000"
 
 
 def ejecutar_seed(db: Session) -> None:
+    from app.persistencia.modelos_db import Base
+    from app.persistencia.sesion_db import engine
+    Base.metadata.create_all(bind=engine)
     _seed_usuarios(db)
     _seed_caso_c1(db)
 
