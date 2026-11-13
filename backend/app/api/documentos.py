@@ -88,7 +88,7 @@ def listar_documentos(
             "documento_id": d.id,
             "nombre": d.nombre,
             "tipo": d.tipo_mime,
-            "creado_en": d.creado_en.isoformat() if d.creado_en else None,
+            "creado_en": d.creado.isoformat() if d.creado else None,
         }
         for d in docs
     ]
