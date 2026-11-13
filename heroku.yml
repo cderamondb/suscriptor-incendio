@@ -5,4 +5,4 @@ build:
 release:
   image: web
   command:
-    - python -c "from app.persistencia.seed import seed; from app.persistencia.sesion_db import SessionLocal; db=SessionLocal(); seed(db); db.close()"
+    - python -c "from app.persistencia.seed import ejecutar_seed; from app.persistencia.sesion_db import SessionLocal; db=SessionLocal(); ejecutar_seed(db); db.close()"
