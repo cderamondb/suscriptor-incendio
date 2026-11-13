@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # Base de datos
     database_url: str = "postgresql://postgres:postgres@db:5432/suscriptor"
 
+    # Sesión
+    secret_key: str = "cambiar-en-produccion"
+
     # Archivos
     tamano_max_archivo_mb: int = 25
     max_archivos_por_carga: int = 20

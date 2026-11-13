@@ -1,11 +1,18 @@
-"""Fixtures compartidos para todos los tests de F1."""
+"""Fixtures compartidos para todos los tests de F1 y F2."""
 
 from __future__ import annotations
+
+import os
+
+os.environ.setdefault("DATABASE_URL", "sqlite:///:memory:")
 
 from decimal import Decimal
 from pathlib import Path
 
 import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from app.catalogo.cargador import cargar_tarifario
 from app.catalogo.repositorio import Repositorio
@@ -22,10 +29,37 @@ from app.dominio.modelos import (
     TipoItem,
     UbicacionRiesgo,
 )
+from app.persistencia.modelos_db import Base
 
 TARIFARIO_PATH = (
     Path(__file__).resolve().parent.parent.parent / "datos" / "ejemplo" / "tarifario.xlsx"
 )
+
+
+@pytest.fixture
+def db_session():
+    engine = create_engine(
+        "sqlite:///:memory:",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    Base.metadata.create_all(engine)
+    _session_factory = sessionmaker(bind=engine, expire_on_commit=False)
+    session = _session_factory()
+
+    import app.persistencia.sesion_db as _sdb
+    _orig_engine = _sdb.engine
+    _orig_session_local = _sdb.SessionLocal
+    _sdb.engine = engine
+    _sdb.SessionLocal = _session_factory
+
+    try:
+        yield session
+    finally:
+        session.close()
+        engine.dispose()
+        _sdb.engine = _orig_engine
+        _sdb.SessionLocal = _orig_session_local
 
 
 @pytest.fixture

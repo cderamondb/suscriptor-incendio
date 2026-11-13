@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cotización {{ numero }}</title>
+<style>
+  body { font-family: Arial, sans-serif; font-size: 11pt; margin: 2cm; color: #333; }
+  h1 { font-size: 18pt; color: #1a1a1a; border-bottom: 2px solid #0066cc; padding-bottom: 8px; }
+  h2 { font-size: 13pt; color: #0066cc; margin-top: 20px; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; }
+  th { background-color: #f0f4f8; font-weight: bold; }
+  .monto { text-align: right; font-family: 'Courier New', monospace; }
+  .total { font-weight: bold; background-color: #e8f0fe; }
+  .footer { margin-top: 30px; font-size: 9pt; color: #666; border-top: 1px solid #ddd; padding-top: 10px; }
+  .vigencia { background-color: #fff8e1; padding: 10px; border-radius: 4px; margin: 15px 0; }
+</style>
+</head>
+<body>
+
+<h1>Cotización N° {{ numero }}</h1>
+
+<h2>Asegurado</h2>
+<table>
+  <tr><th>Razón Social</th><td>{{ asegurado }}</td></tr>
+  <tr><th>RUT</th><td>{{ rut }}</td></tr>
+  <tr><th>Corredor</th><td>{{ corredor }}</td></tr>
+</table>
+
+<h2>Ubicaciones y Coberturas</h2>
+{% for ub in ubicaciones %}
+<table>
+  <tr><th colspan="4">Ubicación {{ loop.index }}: {{ ub.direccion }}</th></tr>
+  <tr><th>Ítem</th><th>Cobertura</th><th>Suma Asegurada (UF)</th><th>Prima (UF)</th></tr>
+  {% for linea in ub.lineas %}
+  <tr>
+    <td>{{ linea.item }}</td>
+    <td>{{ linea.cobertura }}</td>
+    <td class="monto">{{ linea.suma_asegurada }}</td>
+    <td class="monto">{{ linea.prima }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endfor %}
+
+<h2>Resumen de Prima</h2>
+<table>
+  <tr><th>Concepto</th><th class="monto">Monto (UF)</th></tr>
+  <tr><td>Prima Neta</td><td class="monto">{{ prima_neta }}</td></tr>
+  <tr><td>IVA (19%)</td><td class="monto">{{ iva }}</td></tr>
+  <tr class="total"><td>Prima Bruta</td><td class="monto">{{ prima_bruta }}</td></tr>
+  <tr><td>Comisión (informativa)</td><td class="monto">{{ comision }}</td></tr>
+</table>
+
+<h2>Deducible</h2>
+<p>{{ deducible }} UF por siniestro.</p>
+
+<div class="vigencia">
+  <strong>Vigencia de la oferta:</strong> 30 días corridos desde la fecha de emisión ({{ fecha_emision }}).
+</div>
+
+<h2>Condiciones y Sujeciones</h2>
+<ul>
+  <li>Cotización sujeta a inspección de riesgo satisfactoria.</li>
+  <li>Sujeta a aprobación de reaseguro cuando corresponda.</li>
+  <li>Condiciones generales y particulares según póliza estándar de incendio.</li>
+  <li>Moneda: UF (Unidad de Fomento).</li>
+</ul>
+
+<div class="footer">
+  <p>Documento generado por SuscriptorIA Incendio — Uso interno del proceso de suscripción.</p>
+  <p>Este documento no constituye una póliza de seguros.</p>
+</div>
+
+</body>
+</html>

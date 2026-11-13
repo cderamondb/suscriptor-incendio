@@ -11,6 +11,14 @@ dependencies = [
     "pymupdf>=1.24",
     "openpyxl>=3.1",
     "Pillow>=10.0",
+    "sqlalchemy>=2.0",
+    "alembic>=1.14",
+    "argon2-cffi>=23.1",
+    "itsdangerous>=2.2",
+    "weasyprint>=62.0",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.12",
+    "anthropic>=0.40",
 ]
 
 [project.optional-dependencies]
@@ -31,7 +39,10 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "SIM"]
-ignore = ["N818", "UP042", "UP046"]
+ignore = ["N818", "UP042", "UP046", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"
