@@ -1,8 +1,7 @@
 build:
   docker:
     web:
-      dockerfile: backend/Dockerfile
-      context: .
+      dockerfile: Dockerfile
 release:
   image: web
   command:
