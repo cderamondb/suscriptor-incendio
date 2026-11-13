@@ -86,6 +86,12 @@ export async function listarCasos(params?: {
   return request<CasoResumen[]>(`/casos${q ? `?${q}` : ""}`);
 }
 
+export async function listarDocumentos(casoId: string) {
+  return request<{ documento_id: string; nombre: string; tipo: string; creado_en: string | null }[]>(
+    `/casos/${casoId}/documentos`,
+  );
+}
+
 export async function subirDocumentos(casoId: string, archivos: File[]) {
   const form = new FormData();
   archivos.forEach((f) => form.append("archivos", f));

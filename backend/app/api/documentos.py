@@ -13,6 +13,7 @@ from app.ingesta.errores import ArchivoNoSoportado
 from app.persistencia.crud import (
     actualizar_caso,
     crear_documento,
+    listar_documentos_caso,
     obtener_caso,
     obtener_contenido_documento,
     obtener_documento,
@@ -70,6 +71,27 @@ async def subir_documentos(
         actualizar_caso(db, caso, estado=EstadoCaso.DOCUMENTOS_CARGADOS.value)
 
     return resultado
+
+
+@router.get("/casos/{caso_id}/documentos")
+def listar_documentos(
+    caso_id: str,
+    db: Session = Depends(get_db),
+    usuario: UsuarioDB = Depends(usuario_actual),
+):
+    caso = obtener_caso(db, caso_id)
+    if not caso:
+        raise HTTPException(status_code=404, detail="Caso no encontrado")
+    docs = listar_documentos_caso(db, caso_id)
+    return [
+        {
+            "documento_id": d.id,
+            "nombre": d.nombre,
+            "tipo": d.tipo_mime,
+            "creado_en": d.creado_en.isoformat() if d.creado_en else None,
+        }
+        for d in docs
+    ]
 
 
 @router.get("/documentos/{documento_id}/fragmento")

@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { subirDocumentos, lanzarExtraccion, ApiErrorResponse } from "../api/cliente";
+import { listarDocumentos, subirDocumentos, lanzarExtraccion, ApiErrorResponse } from "../api/cliente";
 import CargaArchivos from "../componentes/CargaArchivos";
 import EstadoTrabajo from "../componentes/EstadoTrabajo";
 
 export default function CasoDocumentos() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [docs, setDocs] = useState<{ documento_id: string; tipo: string }[]>([]);
+  const [docs, setDocs] = useState<{ documento_id: string; nombre?: string; tipo: string }[]>([]);
   const [trabajoId, setTrabajoId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [subiendo, setSubiendo] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    listarDocumentos(id)
+      .then((lista) => setDocs(lista))
+      .catch(() => {});
+  }, [id]);
 
   async function handleSubir(archivos: File[]) {
     if (!id) return;
@@ -63,7 +70,7 @@ export default function CasoDocumentos() {
           <ul className="space-y-1">
             {docs.map((d) => (
               <li key={d.documento_id} className="text-sm bg-white border rounded px-3 py-2">
-                {d.tipo} — <span className="font-mono text-xs text-gray-500">{d.documento_id.slice(0, 8)}</span>
+                {d.nombre ?? d.tipo} — <span className="font-mono text-xs text-gray-500">{d.documento_id.slice(0, 8)}</span>
               </li>
             ))}
           </ul>
