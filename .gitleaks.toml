@@ -1,0 +1,6 @@
+title = "suscriptor-incendio gitleaks config"
+
+[allowlist]
+  paths = [
+    ".env.example",
+  ]

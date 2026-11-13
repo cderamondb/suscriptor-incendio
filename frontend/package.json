@@ -1,0 +1,12 @@
+{
+  "name": "suscriptor-incendio-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Frontend se construye en F3'",
+    "build": "mkdir -p dist && echo '<!DOCTYPE html><html><body><h1>SuscriptorIA Incendio</h1><p>Frontend en construccion (F3)</p></body></html>' > dist/index.html",
+    "test": "echo 'Tests de frontend en F3'",
+    "lint": "echo 'Lint de frontend en F3'"
+  }
+}

@@ -1,0 +1,15 @@
+build:
+  docker:
+    web:
+      dockerfile: backend/Dockerfile
+release:
+  image: web
+  command:
+    - echo "Migraciones y seed se agregarán en F2"
+run:
+  web:
+    command:
+      - sh
+      - -c
+      - uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    image: web
