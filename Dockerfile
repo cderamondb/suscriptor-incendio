@@ -29,6 +29,7 @@ COPY backend/pyproject.toml ./
 RUN pip install --no-cache-dir .
 
 COPY backend/app/ ./app/
+COPY backend/tests/fixtures/slip_c1.pdf backend/tests/fixtures/schedule_c1.xlsx ./tests/fixtures/
 COPY prompts/ ./prompts/
 COPY datos/ ./datos/
 COPY --from=frontend-build /frontend/dist ./static/
