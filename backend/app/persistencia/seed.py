@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.persistencia.crud import (
     crear_documento,
+    listar_documentos_caso,
     obtener_caso,
     obtener_usuario_por_correo,
 )
@@ -69,26 +70,27 @@ def _seed_usuarios(db: Session) -> None:
 
 def _seed_caso_c1(db: Session) -> None:
     existente = obtener_caso(db, CASO_C1_ID)
-    if existente:
-        return
+    if not existente:
+        usuario_eval = obtener_usuario_por_correo(db, "evaluacion@demo.cl")
+        creado_por = usuario_eval.id if usuario_eval else None
 
-    usuario_eval = obtener_usuario_por_correo(db, "evaluacion@demo.cl")
-    creado_por = usuario_eval.id if usuario_eval else None
+        from app.persistencia.modelos_db import CasoDB
+        caso = CasoDB(
+            id=CASO_C1_ID,
+            asegurado="Comercializadora Demo SpA",
+            rut="76.123.456-7",
+            corredor="Corredor Ficticio Ltda",
+            ejecutivo="Ejecutivo Demo",
+            moneda="UF",
+            vigencia_solicitada="2025-01-01 a 2026-01-01",
+            estado="DOCUMENTOS_CARGADOS",
+            creado_por=creado_por,
+        )
+        db.add(caso)
+        db.commit()
 
-    from app.persistencia.modelos_db import CasoDB
-    caso = CasoDB(
-        id=CASO_C1_ID,
-        asegurado="Comercializadora Demo SpA",
-        rut="76.123.456-7",
-        corredor="Corredor Ficticio Ltda",
-        ejecutivo="Ejecutivo Demo",
-        moneda="UF",
-        vigencia_solicitada="2025-01-01 a 2026-01-01",
-        estado="DOCUMENTOS_CARGADOS",
-        creado_por=creado_por,
-    )
-    db.add(caso)
-    db.commit()
+    docs_existentes = listar_documentos_caso(db, CASO_C1_ID)
+    nombres_existentes = {d.nombre for d in docs_existentes}
 
     fixtures_dir = Path(__file__).resolve().parent.parent.parent / "tests" / "fixtures"
 
@@ -99,6 +101,8 @@ def _seed_caso_c1(db: Session) -> None:
     ]
 
     for nombre, tipo_mime in archivos:
+        if nombre in nombres_existentes:
+            continue
         ruta = fixtures_dir / nombre
         if not ruta.exists():
             continue
