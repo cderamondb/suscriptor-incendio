@@ -5,4 +5,4 @@ build:
 release:
   image: web
   command:
-    - echo "Migraciones y seed se agregarán en F2"
+    - python -c "from app.persistencia.seed import seed; from app.persistencia.sesion_db import SessionLocal; db=SessionLocal(); seed(db); db.close()"
