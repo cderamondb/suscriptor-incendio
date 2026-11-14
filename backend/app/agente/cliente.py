@@ -109,7 +109,7 @@ class ClienteAnthropic:
         client = anthropic.Anthropic(api_key=self.api_key, timeout=self.timeout)
         kwargs: dict = {
             "model": self.model_id,
-            "max_tokens": 2048,
+            "max_tokens": 4096,
             "messages": mensajes,
         }
         if system:
