@@ -2,12 +2,77 @@
 
 from __future__ import annotations
 
+import re
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.api.dependencias import usuario_actual
 from app.config import settings
+
+
+_RE_UB = re.compile(r"^ubicaciones\[(\d+)\]\.(.+)$")
+_RE_ITEM = re.compile(r"^items\[(\d+)\]\.(.+)$")
+
+_CAMPOS_TOP = {
+    "razon_social", "rut", "actividad_declarada", "deducible_uf",
+    "vigencia_desde", "vigencia_hasta", "aseguradora_anterior",
+    "prima_anterior", "inspeccion", "siniestralidad",
+    "coberturas_solicitadas",
+}
+
+
+def _estructurar_ficha(plana: dict) -> dict:
+    """Convierte ficha plana (claves como 'ubicaciones[0].direccion') a estructura anidada."""
+    resultado: dict = {}
+    ubs: dict[int, dict] = {}
+
+    for clave, valor in plana.items():
+        if clave == "alertas":
+            resultado["alertas"] = valor if isinstance(valor, list) else []
+            continue
+
+        m = _RE_UB.match(clave)
+        if m:
+            idx = int(m.group(1))
+            campo_ub = m.group(2)
+            if idx not in ubs:
+                ubs[idx] = {"items": []}
+
+            m_item = _RE_ITEM.match(campo_ub)
+            if m_item:
+                item_idx = int(m_item.group(1))
+                item_campo = m_item.group(2)
+                items = ubs[idx]["items"]
+                while len(items) <= item_idx:
+                    items.append({})
+                if isinstance(valor, dict) and "valor" in valor:
+                    items[item_idx][item_campo] = valor["valor"]
+                else:
+                    items[item_idx][item_campo] = valor
+            else:
+                ubs[idx][campo_ub] = valor
+            continue
+
+        resultado[clave] = valor
+
+    if ubs:
+        max_idx = max(ubs.keys())
+        ubicaciones = []
+        for i in range(max_idx + 1):
+            ub = ubs.get(i, {"items": []})
+            if "items" not in ub:
+                ub["items"] = []
+            ubicaciones.append(ub)
+        resultado["ubicaciones"] = ubicaciones
+    else:
+        resultado["ubicaciones"] = []
+
+    if "alertas" not in resultado:
+        resultado["alertas"] = []
+
+    return resultado
 from app.dominio.datos_minimos import evaluar_completitud
 from app.dominio.estados import transitar
 from app.dominio.modelos import EstadoCaso, FichaRiesgo, TransicionInvalida
@@ -73,8 +138,10 @@ def obtener_ficha(
         except Exception:
             completitud = None
 
+    ficha_estructurada = _estructurar_ficha(ficha_data) if ficha_data else None
+
     return {
-        "ficha": ficha_data,
+        "ficha": ficha_estructurada,
         "completitud": completitud,
         "tokens": {
             "entrada": tokens_entrada,

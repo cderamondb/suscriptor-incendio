@@ -131,6 +131,7 @@ def ejecutar_bucle(
                 )
                 return
 
+            logger.info("Paso %d, motivo=%s", pasos, resp.motivo_termino)
             tool_uses = [b for b in resp.contenido if isinstance(b, BloqueHerramienta)]
             if not tool_uses:
                 texto_final = ""
@@ -153,6 +154,7 @@ def ejecutar_bucle(
 
             resultados_herramientas = []
             for tu in tool_uses:
+                logger.info("Herramienta: %s", tu.nombre)
                 herramientas_usadas.append(tu.nombre)
                 resultado = ejecutar_herramienta(tu.nombre, tu.entrada, db, caso_id)
                 resultados_herramientas.append({

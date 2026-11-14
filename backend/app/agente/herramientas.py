@@ -207,7 +207,22 @@ def ejecutar_herramienta(
     caso_id: str,
 ) -> dict:
     """Ejecuta una herramienta y devuelve el resultado como dict."""
+    try:
+        return _despachar_herramienta(nombre, entrada, db, caso_id)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).exception(
+            "Error en herramienta %s: %s", nombre, e,
+        )
+        return {"is_error": True, "codigo": "ERROR_HERRAMIENTA", "mensaje": str(e)}
 
+
+def _despachar_herramienta(
+    nombre: str,
+    entrada: dict,
+    db: Session,
+    caso_id: str,
+) -> dict:
     if nombre == "listar_documentos":
         return _listar_documentos(db, caso_id)
     elif nombre == "leer_documento":
