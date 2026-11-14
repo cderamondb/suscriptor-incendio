@@ -114,15 +114,15 @@ def test_c8_cita_no_encontrada(db_session):
 # ── C9: presupuesto agotado ───────────────────────────────────────────
 
 def test_c9_presupuesto_agotado(db_session):
+    """El presupuesto se verifica por tokens del trabajo actual, no acumulado del caso."""
     caso = crear_caso(db_session, asegurado="Test", rut="1-1")
-    caso.tokens_entrada = 500_001
     db_session.commit()
 
     cliente = ClienteFalso(respuestas=[
         Respuesta(
-            contenido=[BloqueTexto(texto="No debería llegar aquí.")],
-            motivo_termino="end_turn",
-            tokens_entrada=50, tokens_salida=30,
+            contenido=[BloqueHerramienta(id="t1", nombre="listar_documentos", entrada={})],
+            motivo_termino="tool_use",
+            tokens_entrada=300_000, tokens_salida=200_001,
         ),
     ])
     set_cliente_override(cliente)

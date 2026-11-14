@@ -92,7 +92,7 @@ def ejecutar_bucle(
 
     try:
         while pasos < max_pasos:
-            _verificar_presupuesto(db, caso_id)
+            _verificar_presupuesto(db, caso_id, tokens_entrada_total + tokens_salida_total)
 
             resp = cliente.enviar(mensajes, HERRAMIENTAS_SCHEMA, system=system)
             pasos += 1
@@ -189,15 +189,11 @@ def _bloque_a_dict(bloque: BloqueTexto | BloqueHerramienta) -> dict:
     }
 
 
-def _verificar_presupuesto(db: Session, caso_id: str) -> None:
+def _verificar_presupuesto(db: Session, caso_id: str, tokens_trabajo: int = 0) -> None:
     from datetime import timedelta
     from datetime import timezone as tz
-    caso = obtener_caso(db, caso_id)
-    if not caso:
-        return
 
-    tokens_caso = (caso.tokens_entrada or 0) + (caso.tokens_salida or 0)
-    if tokens_caso >= settings.max_tokens_por_caso:
+    if tokens_trabajo >= settings.max_tokens_por_caso:
         raise PresupuestoAgotado("caso")
 
 
