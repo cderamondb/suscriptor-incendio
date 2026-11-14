@@ -115,7 +115,7 @@ def test_c8_cita_no_encontrada(db_session):
 
 def test_c9_presupuesto_agotado(db_session):
     caso = crear_caso(db_session, asegurado="Test", rut="1-1")
-    caso.tokens_entrada = 200_001
+    caso.tokens_entrada = 500_001
     db_session.commit()
 
     cliente = ClienteFalso(respuestas=[

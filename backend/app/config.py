@@ -12,9 +12,9 @@ class Settings(BaseSettings):
     # Prompts y agente
     prompt_version: str = "v1"
     esfuerzo_llm: str = "high"
-    max_pasos_agente: int = 20
+    max_pasos_agente: int = 15
     timeout_llm_s: int = 120
-    max_tokens_por_caso: int = 200_000
+    max_tokens_por_caso: int = 500_000
     max_tokens_dia: int = 2_000_000
     precio_token_entrada_usd: float = 0.0
     precio_token_salida_usd: float = 0.0

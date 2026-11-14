@@ -100,7 +100,7 @@ def ejecutar_bucle(
             tokens_salida_total += resp.tokens_salida
             tokens_cache_total += resp.tokens_cache
 
-            _registrar_tokens(db, caso_id, resp.tokens_entrada + resp.tokens_salida)
+            _registrar_tokens(db, caso_id, resp.tokens_entrada, resp.tokens_salida)
 
             if resp.motivo_termino == "end_turn":
                 texto_final = ""
@@ -209,7 +209,7 @@ def _verificar_presupuesto(db: Session, caso_id: str) -> None:
         raise PresupuestoAgotado("dia")
 
 
-def _registrar_tokens(db: Session, caso_id: str, tokens: int) -> None:
+def _registrar_tokens(db: Session, caso_id: str, tokens_entrada: int, tokens_salida: int) -> None:
     from datetime import timedelta
     from datetime import timezone as tz
 
@@ -217,12 +217,13 @@ def _registrar_tokens(db: Session, caso_id: str, tokens: int) -> None:
 
     caso = obtener_caso(db, caso_id)
     if caso:
-        caso.tokens_entrada = (caso.tokens_entrada or 0) + tokens
+        caso.tokens_entrada = (caso.tokens_entrada or 0) + tokens_entrada
+        caso.tokens_salida = (caso.tokens_salida or 0) + tokens_salida
         db.commit()
 
     zona_chile = tz(timedelta(hours=-3))
     hoy = datetime.now(zona_chile).date()
-    sumar_tokens_dia(db, hoy, tokens)
+    sumar_tokens_dia(db, hoy, tokens_entrada + tokens_salida)
 
 
 def _finalizar_ok(

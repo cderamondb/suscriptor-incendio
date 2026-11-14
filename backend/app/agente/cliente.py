@@ -109,11 +109,13 @@ class ClienteAnthropic:
         client = anthropic.Anthropic(api_key=self.api_key, timeout=self.timeout)
         kwargs: dict = {
             "model": self.model_id,
-            "max_tokens": 4096,
+            "max_tokens": 2048,
             "messages": mensajes,
         }
         if system:
-            kwargs["system"] = system
+            kwargs["system"] = [
+                {"type": "text", "text": system, "cache_control": {"type": "ephemeral"}},
+            ]
         if herramientas:
             kwargs["tools"] = herramientas
             kwargs["tool_choice"] = {"type": "auto"}
