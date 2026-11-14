@@ -14,7 +14,6 @@ import json
 import os
 import sys
 from datetime import UTC, datetime
-from decimal import Decimal
 from pathlib import Path
 
 # Asegurar que el directorio del backend esté en el path
@@ -32,7 +31,7 @@ if _env_file.exists():
             os.environ.setdefault(clave.strip(), valor.strip())
 
 os.environ.setdefault("DATABASE_URL", "sqlite:///eval_temp.db")
-os.environ.setdefault("PROVEEDOR_LLM", "anthropic")
+os.environ["PROVEEDOR_LLM"] = "anthropic"
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -87,8 +86,8 @@ CASOS_EVAL = [
 def _crear_db_temporal() -> Session:
     engine = create_engine("sqlite:///eval_temp.db", echo=False)
     Base.metadata.create_all(engine)
-    SessionEval = sessionmaker(bind=engine, expire_on_commit=False)
-    return SessionEval()
+    session_eval = sessionmaker(bind=engine, expire_on_commit=False)
+    return session_eval()
 
 
 def _cargar_caso(db: Session, caso_eval: dict) -> str:
@@ -186,7 +185,14 @@ def _evaluar_campos(ficha: dict, esperada: dict) -> dict:
 
 
 def _extraer_valor(ficha: dict, ruta: str) -> object:
-    """Extrae un valor de la ficha usando una ruta tipo 'ubicaciones[0].direccion'."""
+    """Extrae un valor de la ficha usando una ruta tipo 'ubicaciones[0].direccion'.
+
+    Prueba primero como clave plana (la herramienta registrar_dato guarda
+    claves como 'ubicaciones[0].direccion'), luego intenta navegación anidada.
+    """
+    if ruta in ficha:
+        return ficha[ruta]
+
     partes = ruta.replace("]", "").split(".")
     actual = ficha
 
@@ -287,7 +293,7 @@ def _evaluar_restricciones(ficha: dict, esperada: dict) -> dict:
         niveles = {"BAJA": 1, "MEDIA": 2, "ALTA": 3}
         max_permitido = niveles.get(max_nivel, 2)
         todas_ok = True
-        for clave, valor in ficha.items():
+        for _clave, valor in ficha.items():
             if isinstance(valor, dict) and "confianza" in valor:
                 if niveles.get(valor["confianza"], 3) > max_permitido:
                     todas_ok = False
@@ -309,12 +315,7 @@ def ejecutar_eval(db: Session, caso_eval: dict, prompt_version: str) -> dict:
     caso_id = _cargar_caso(db, caso_eval)
 
     os.environ["PROMPT_VERSION"] = prompt_version
-    # Recargar settings
-    from importlib import reload
-    import app.config
-    reload(app.config)
-    from app.config import settings as s
-    s.prompt_version = prompt_version
+    settings.prompt_version = prompt_version
 
     trabajo = crear_trabajo(db, caso_id, tipo="EXTRACCION", prompt_version=prompt_version)
     trabajo_id = trabajo.id
@@ -453,9 +454,9 @@ def main() -> None:
     print(f"\n  Resultados guardados en: {archivo_salida}")
 
     # Imprimir JSON completo para captura desde entornos efimeros
-    print(f"\n--- JSON_INICIO ---")
+    print("\n--- JSON_INICIO ---")
     print(json.dumps(resumen, ensure_ascii=False, indent=2, default=str))
-    print(f"--- JSON_FIN ---")
+    print("--- JSON_FIN ---")
 
     # Limpiar DB temporal
     db.close()

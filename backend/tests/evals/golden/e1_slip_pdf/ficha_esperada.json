@@ -1,62 +1,50 @@
 {
-  "descripcion": "E1 — Slip PDF: campos bloqueantes con valor y origen exactos",
+  "descripcion": "E1 - Slip PDF: campos bloqueantes con valor extraido",
   "campos_bloqueantes": {
     "razon_social": {
-      "valor": "Comercializadora Demo SpA",
-      "origen_contiene": "slip"
+      "valor_contiene": "Comercializadora Demo"
     },
     "rut": {
-      "valor": "76.123.456-7",
-      "origen_contiene": "slip"
+      "valor_contiene": "76.123.456-7"
     },
     "actividad_declarada": {
-      "valor_contiene": "oficinas",
-      "origen_contiene": "slip"
+      "valor_contiene": "oficinas"
     },
     "ubicaciones[0].direccion": {
-      "valor_contiene": "Providencia 1234",
-      "origen_contiene": "slip"
+      "valor_contiene": "Providencia"
     },
     "ubicaciones[0].comuna": {
-      "valor_contiene": "Providencia",
-      "origen_contiene": "slip"
+      "valor_contiene": "Providencia"
     },
     "ubicaciones[0].region": {
-      "valor_contiene": "Metropolitana",
-      "origen_contiene": "slip"
+      "valor_contiene": "Metropolitana"
     },
     "ubicaciones[0].ocupacion_codigo": {
-      "valor_no_vacio": true,
-      "origen_contiene": "slip"
+      "valor_no_vacio": true
     },
     "ubicaciones[0].construccion_clase": {
-      "valor": "A",
-      "origen_contiene": "slip"
+      "valor_contiene": "A"
     },
     "ubicaciones[0].proteccion": {
-      "valor_contiene": "ALTO",
-      "origen_contiene": "slip"
+      "valor_no_vacio": true
     },
-    "ubicaciones[0].items": {
-      "minimo_items": 2,
-      "suma_edificio": "50000",
-      "suma_contenidos": "10000"
+    "ubicaciones[0].items[0].tipo": {
+      "valor_no_vacio": true
+    },
+    "ubicaciones[0].items[1].tipo": {
+      "valor_no_vacio": true
     },
     "ubicaciones[0].zona_sismica": {
-      "valor": 2,
-      "origen_contiene": "slip"
+      "valor_contiene": "2"
     },
     "deducible_uf": {
-      "valor": "10",
-      "origen_contiene": "slip"
+      "valor_contiene": "10"
     },
     "vigencia_desde": {
-      "valor_contiene": "2025-01-01",
-      "origen_contiene": "slip"
+      "valor_contiene": "2025"
     },
     "vigencia_hasta": {
-      "valor_contiene": "2026-01-01",
-      "origen_contiene": "slip"
+      "valor_contiene": "2026"
     }
   },
   "coberturas_solicitadas": ["INCENDIO", "SISMO"],

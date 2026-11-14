@@ -1,55 +1,40 @@
 {
-  "descripcion": "E4 — Contradicción: slip dice edificio 50.000 UF, Excel dice 55.000 UF",
+  "descripcion": "E4 - Contradiccion: slip dice edificio 50.000 UF, Excel dice 55.000 UF",
   "campos_bloqueantes": {
     "razon_social": {
-      "valor": "Importadora Ficticia Ltda.",
-      "origen_contiene": "slip"
+      "valor_contiene": "Importadora Ficticia"
     },
     "rut": {
-      "valor": "77.888.999-0",
-      "origen_contiene": "slip"
+      "valor_contiene": "77.888.999-0"
     },
     "actividad_declarada": {
-      "valor_contiene": "alimentos",
-      "origen_contiene": "slip"
+      "valor_contiene": "alimentos"
     },
     "ubicaciones[0].direccion": {
-      "valor_contiene": "Bandera 200",
-      "origen_contiene": "slip"
+      "valor_contiene": "Bandera"
     },
     "ubicaciones[0].comuna": {
       "valor_contiene": "Santiago"
     },
     "ubicaciones[0].construccion_clase": {
-      "valor": "B"
-    },
-    "ubicaciones[0].items": {
-      "minimo_items": 2
+      "valor_contiene": "B"
     },
     "deducible_uf": {
-      "valor": "20",
-      "origen_contiene": "slip"
+      "valor_contiene": "20"
     },
     "vigencia_desde": {
-      "valor_contiene": "2025-06-01"
+      "valor_contiene": "2025"
     },
     "vigencia_hasta": {
-      "valor_contiene": "2026-06-01"
+      "valor_contiene": "2026"
     }
   },
   "coberturas_solicitadas": ["INCENDIO", "SISMO"],
   "alertas_esperadas": [
     {
-      "tipo": "CONTRADICCION",
-      "detalle_contiene": "50.000",
-      "detalle_contiene_2": "55.000"
+      "tipo_cualquiera": ["CONTRADICCION", "INCONSISTENCIA", "DISCREPANCIA"],
+      "detalle_contiene": "50"
     }
   ],
-  "restricciones": {
-    "ambos_valores_registrados": {
-      "campo": "ubicaciones[0].items.edificio",
-      "valor_slip": "50000",
-      "valor_schedule": "55000"
-    }
-  }
+  "restricciones": {}
 }

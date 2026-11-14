@@ -42,7 +42,7 @@ def _obtener_cliente() -> ClienteLLM:
         from app.agente.cliente import ClienteAnthropic
         return ClienteAnthropic(
             api_key=settings.anthropic_api_key,
-            model_id=settings.inference_model_id or "claude-sonnet-4-20250514",
+            model_id=settings.inference_model_id or "claude-sonnet-4-6",
             timeout=settings.timeout_llm_s,
         )
     else:
@@ -74,8 +74,11 @@ def ejecutar_bucle(
     if tipo == "EXTRACCION":
         mensajes.append({
             "role": "user",
-            "content": "Extrae los datos del caso leyendo todos los documentos cargados. "
-                       "Registra cada dato con su origen y cita textual.",
+            "content": (
+                f"Extrae los datos del caso {caso_id} leyendo todos "
+                "los documentos cargados. "
+                "Registra cada dato con su origen y cita textual."
+            ),
         })
     elif tipo == "AGENTE" and mensaje:
         mensajes.append({"role": "user", "content": mensaje})
