@@ -1,0 +1,65 @@
+{
+  "descripcion": "E1 — Slip PDF: campos bloqueantes con valor y origen exactos",
+  "campos_bloqueantes": {
+    "razon_social": {
+      "valor": "Comercializadora Demo SpA",
+      "origen_contiene": "slip"
+    },
+    "rut": {
+      "valor": "76.123.456-7",
+      "origen_contiene": "slip"
+    },
+    "actividad_declarada": {
+      "valor_contiene": "oficinas",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].direccion": {
+      "valor_contiene": "Providencia 1234",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].comuna": {
+      "valor_contiene": "Providencia",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].region": {
+      "valor_contiene": "Metropolitana",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].ocupacion_codigo": {
+      "valor_no_vacio": true,
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].construccion_clase": {
+      "valor": "A",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].proteccion": {
+      "valor_contiene": "ALTO",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].items": {
+      "minimo_items": 2,
+      "suma_edificio": "50000",
+      "suma_contenidos": "10000"
+    },
+    "ubicaciones[0].zona_sismica": {
+      "valor": 2,
+      "origen_contiene": "slip"
+    },
+    "deducible_uf": {
+      "valor": "10",
+      "origen_contiene": "slip"
+    },
+    "vigencia_desde": {
+      "valor_contiene": "2025-01-01",
+      "origen_contiene": "slip"
+    },
+    "vigencia_hasta": {
+      "valor_contiene": "2026-01-01",
+      "origen_contiene": "slip"
+    }
+  },
+  "coberturas_solicitadas": ["INCENDIO", "SISMO"],
+  "alertas_esperadas": [],
+  "restricciones": {}
+}

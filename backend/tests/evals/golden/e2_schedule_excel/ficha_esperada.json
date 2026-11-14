@@ -1,0 +1,87 @@
+{
+  "descripcion": "E2 — Schedule Excel: 3 ubicaciones, orígenes hoja!celda, sumas por ítem",
+  "campos_bloqueantes": {
+    "ubicaciones[0].direccion": {
+      "valor_contiene": "Providencia 1234",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[0].comuna": {
+      "valor_contiene": "Providencia",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[0].region": {
+      "valor_contiene": "Metropolitana",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[0].ocupacion_codigo": {
+      "valor_no_vacio": true
+    },
+    "ubicaciones[0].construccion_clase": {
+      "valor": "A",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[0].items": {
+      "minimo_items": 2,
+      "suma_edificio": "50000",
+      "suma_contenidos": "10000"
+    },
+    "ubicaciones[0].zona_sismica": {
+      "valor": 2
+    },
+    "ubicaciones[1].direccion": {
+      "valor_contiene": "Huérfanos 900",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[1].comuna": {
+      "valor_contiene": "Santiago",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[1].region": {
+      "valor_contiene": "Metropolitana",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[1].ocupacion_codigo": {
+      "valor_no_vacio": true
+    },
+    "ubicaciones[1].construccion_clase": {
+      "valor": "B",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[1].items": {
+      "minimo_items": 3,
+      "suma_edificio": "30000",
+      "suma_contenidos": "5000",
+      "suma_existencias": "8000"
+    },
+    "ubicaciones[1].zona_sismica": {
+      "valor": 2
+    },
+    "ubicaciones[2].direccion": {
+      "valor_contiene": "Libertad 450",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[2].comuna": {
+      "valor_contiene": "Viña del Mar",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[2].region": {
+      "valor_contiene": "Valparaíso",
+      "origen_contiene": "Ubicaciones"
+    },
+    "ubicaciones[2].items": {
+      "minimo_items": 3,
+      "suma_edificio": "20000",
+      "suma_contenidos": "3000",
+      "suma_existencias": "2000"
+    },
+    "ubicaciones[2].zona_sismica": {
+      "valor": 3
+    }
+  },
+  "total_ubicaciones": 3,
+  "coberturas_solicitadas": [],
+  "alertas_esperadas": [],
+  "restricciones": {
+    "origenes_con_hoja_celda": true
+  }
+}

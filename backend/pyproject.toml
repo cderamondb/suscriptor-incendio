@@ -58,6 +58,7 @@ disallow_any_generics = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "-m 'not eval'"
 markers = [
     "eval: evals con LLM real (costosas, requieren confirmación)",
 ]

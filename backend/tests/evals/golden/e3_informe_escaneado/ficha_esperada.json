@@ -1,0 +1,22 @@
+{
+  "descripcion": "E3 — Informe escaneado: lectura por visión, confianza ≤ MEDIA",
+  "campos_bloqueantes": {
+    "ubicaciones[0].direccion": {
+      "valor_contiene": "Providencia",
+      "confianza_maxima": "MEDIA"
+    },
+    "ubicaciones[0].construccion_clase": {
+      "valor": "A",
+      "confianza_maxima": "MEDIA"
+    },
+    "ubicaciones[0].proteccion": {
+      "valor_contiene": "ALTO",
+      "confianza_maxima": "MEDIA"
+    }
+  },
+  "coberturas_solicitadas": [],
+  "alertas_esperadas": [],
+  "restricciones": {
+    "confianza_maxima_global": "MEDIA"
+  }
+}

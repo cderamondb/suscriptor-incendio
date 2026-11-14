@@ -1,0 +1,55 @@
+{
+  "descripcion": "E4 — Contradicción: slip dice edificio 50.000 UF, Excel dice 55.000 UF",
+  "campos_bloqueantes": {
+    "razon_social": {
+      "valor": "Importadora Ficticia Ltda.",
+      "origen_contiene": "slip"
+    },
+    "rut": {
+      "valor": "77.888.999-0",
+      "origen_contiene": "slip"
+    },
+    "actividad_declarada": {
+      "valor_contiene": "alimentos",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].direccion": {
+      "valor_contiene": "Bandera 200",
+      "origen_contiene": "slip"
+    },
+    "ubicaciones[0].comuna": {
+      "valor_contiene": "Santiago"
+    },
+    "ubicaciones[0].construccion_clase": {
+      "valor": "B"
+    },
+    "ubicaciones[0].items": {
+      "minimo_items": 2
+    },
+    "deducible_uf": {
+      "valor": "20",
+      "origen_contiene": "slip"
+    },
+    "vigencia_desde": {
+      "valor_contiene": "2025-06-01"
+    },
+    "vigencia_hasta": {
+      "valor_contiene": "2026-06-01"
+    }
+  },
+  "coberturas_solicitadas": ["INCENDIO", "SISMO"],
+  "alertas_esperadas": [
+    {
+      "tipo": "CONTRADICCION",
+      "detalle_contiene": "50.000",
+      "detalle_contiene_2": "55.000"
+    }
+  ],
+  "restricciones": {
+    "ambos_valores_registrados": {
+      "campo": "ubicaciones[0].items.edificio",
+      "valor_slip": "50000",
+      "valor_schedule": "55000"
+    }
+  }
+}
