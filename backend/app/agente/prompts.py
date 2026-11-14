@@ -9,8 +9,18 @@ from app.config import settings
 
 def cargar_system_prompt(version: str | None = None) -> str:
     version = version or settings.prompt_version
-    base = Path(__file__).resolve().parent.parent.parent.parent
-    ruta = base / "prompts" / f"suscriptor_{version}.md"
-    if not ruta.exists():
-        raise FileNotFoundError(f"Prompt no encontrado: {ruta}")
-    return ruta.read_text(encoding="utf-8")
+    nombre = f"suscriptor_{version}.md"
+
+    # Buscar en varias ubicaciones posibles
+    candidatos = [
+        Path(__file__).resolve().parent.parent.parent.parent / "prompts" / nombre,
+        Path(__file__).resolve().parent.parent.parent / "prompts" / nombre,
+        Path("/app/prompts") / nombre,
+    ]
+    for ruta in candidatos:
+        if ruta.exists():
+            return ruta.read_text(encoding="utf-8")
+
+    raise FileNotFoundError(
+        f"Prompt no encontrado: {nombre} (buscado en {[str(c) for c in candidatos]})",
+    )

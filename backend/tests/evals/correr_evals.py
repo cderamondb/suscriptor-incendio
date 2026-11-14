@@ -452,11 +452,19 @@ def main() -> None:
     print(f"  Meta >=90%: {'SI' if resumen['meta_cumplida'] else 'NO'}")
     print(f"\n  Resultados guardados en: {archivo_salida}")
 
+    # Imprimir JSON completo para captura desde entornos efimeros
+    print(f"\n--- JSON_INICIO ---")
+    print(json.dumps(resumen, ensure_ascii=False, indent=2, default=str))
+    print(f"--- JSON_FIN ---")
+
     # Limpiar DB temporal
     db.close()
-    db_path = Path("eval_temp.db")
-    if db_path.exists():
-        db_path.unlink()
+    try:
+        db_path = Path("eval_temp.db")
+        if db_path.exists():
+            db_path.unlink()
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":
